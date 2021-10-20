@@ -17,7 +17,20 @@ def create_nqueens_csp(n = 8):
     """
     csp = util.CSP()
     # BEGIN_YOUR_CODE (around 7 lines of code expected)
-    raise Exception("Not implemented yet")
+    domain = list(range(0, n));
+    
+    Xi = list (range(0, n));
+    
+    for x in Xi:
+        csp.add_variable(x, domain);
+    
+    for index1, x1 in enumerate(Xi):
+        for index2, x2 in enumerate(Xi):
+            if (index1 != index2):
+                csp.add_binary_potential(x1, x2, lambda x, y : x!=y)
+            csp.add_binary_potential(x1, x2, lambda xi, xj : abs(index1-index2)!=abs(xi-xj));
+                    
+#    raise Exception("Not implemented yet")
     # END_YOUR_CODE
     return csp
 
@@ -213,6 +226,9 @@ class BacktrackingSearch():
             # Heuristic: most constrained variable (MCV)
             # Select a variable with the least number of remaining domain values.
             # BEGIN_YOUR_CODE (around 5 lines of code expected)
+            
+            
+            
             raise Exception("Not implemented yet")
             # END_YOUR_CODE
 
