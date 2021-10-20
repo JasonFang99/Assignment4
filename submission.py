@@ -100,6 +100,8 @@ class BacktrackingSearch():
         @return w: Change in weights as a result of the proposed assignment. This
             will be used as a multiplier on the current weight.
         """
+        
+        print (assignment[var])
         assert assignment[var] is None
         w = 1.0
         if self.csp.unaryPotentials[var]:
@@ -111,7 +113,7 @@ class BacktrackingSearch():
             if w == 0: return w
         return w
 
-    def solve(self, csp, mcv = False, lcv = False, mac = False):
+    def solve(self, csp, mcv = True, lcv = False, mac = False):
         """
         Solves the given weighted CSP using heuristics as specified in the
         parameter. Note that unlike a typical unweighted CSP where the search
@@ -195,6 +197,7 @@ class BacktrackingSearch():
             # When arc consistency check is not enabled.
             for val in ordered_values:
                 deltaWeight = self.get_delta_weight(assignment, var, val)
+                
                 if deltaWeight > 0:
                     assignment[var] = val
                     self.backtrack(assignment, numAssigned + 1, weight * deltaWeight)
@@ -227,7 +230,23 @@ class BacktrackingSearch():
             # Select a variable with the least number of remaining domain values.
             # BEGIN_YOUR_CODE (around 5 lines of code expected)
             
+            least = -1
+            v = 100
+            for var in range(len(assignment)):
+                
+                count = 0
+                if (assignment[var] is None):
+                    domain = self.csp.valNames[var]
+                    for value in range(len(domain)):
+                        if self.get_delta_weight(assignment, var, value) != 0:
+                            count += 1
+                    if count < v and count != 0:
+                        least = var
+                    
+                    return least
             
+            if least == -1:
+                return
             
             raise Exception("Not implemented yet")
             # END_YOUR_CODE
