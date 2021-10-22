@@ -101,7 +101,7 @@ class BacktrackingSearch():
             will be used as a multiplier on the current weight.
         """
         
-        print (assignment[var])
+#        print (assignment[var])
         assert assignment[var] is None
         w = 1.0
         if self.csp.unaryPotentials[var]:
@@ -113,7 +113,7 @@ class BacktrackingSearch():
             if w == 0: return w
         return w
 
-    def solve(self, csp, mcv = True, lcv = False, mac = False):
+    def solve(self, csp, mcv = True, lcv = True, mac = False):
         """
         Solves the given weighted CSP using heuristics as specified in the
         parameter. Note that unlike a typical unweighted CSP where the search
@@ -163,6 +163,7 @@ class BacktrackingSearch():
         @param weight: The weight of the current partial assignment.
         """
 
+#        print("Backtrack function: numAssigned = " + str(numAssigned))
         self.numOperations += 1
         assert weight > 0
         if numAssigned == self.csp.numVars:
@@ -184,11 +185,12 @@ class BacktrackingSearch():
                 self.optimalAssignment = newAssignment
                 if self.firstAssignmentNumOperations == 0:
                     self.firstAssignmentNumOperations = self.numOperations
+#            print("Return backtrack")
             return
 
         # Select the index of the next variable to be assigned.
         var = self.get_unassigned_variable(assignment)
-
+#        print("Assignment in backtrack: " + str(assignment))
         # Obtain the order of which a variable's values will be tried. Note that
         # this stores the indices of the values with respect to |var|'s domain.
         ordered_values = self.get_ordered_values(assignment, var)
@@ -196,6 +198,8 @@ class BacktrackingSearch():
         if not self.mac:
             # When arc consistency check is not enabled.
             for val in ordered_values:
+            
+#                print("The variable is: " + str(var))
                 deltaWeight = self.get_delta_weight(assignment, var, val)
                 
                 if deltaWeight > 0:
@@ -232,23 +236,26 @@ class BacktrackingSearch():
             
             least = -1
             v = 100
+            
+#            print("Assignment in function: " + str(assignment))
             for var in range(len(assignment)):
                 
                 count = 0
+                
+                # find the variable that has not been assigned a value
                 if (assignment[var] is None):
                     domain = self.csp.valNames[var]
                     for value in range(len(domain)):
                         if self.get_delta_weight(assignment, var, value) != 0:
                             count += 1
-                    if count < v and count != 0:
+                    if count < v:
                         least = var
-                    
+#                    print("The variable " + str(var) + " has least number of remaining domain values which is " + str(least))
                     return least
+#                else:
+#                    print("The variable " + str(var) + " has been assigned. The value is: " + str(assignment[var]))
             
-            if least == -1:
-                return
-            
-            raise Exception("Not implemented yet")
+#            raise Exception("Not implemented yet")
             # END_YOUR_CODE
 
     def get_ordered_values(self, assignment, var):
@@ -274,6 +281,18 @@ class BacktrackingSearch():
             # Return value indices in ascending order of the number of additional
             # constraints imposed on unassigned neighboring variables.
             # BEGIN_YOUR_CODE (around 12 lines of code expected)
+            
+            
+            for d in self.domains[var]:
+                
+#            print("The variable: " + str(var) + " " +  str(len(self.csp.binaryPotentials[var])))
+#            print (var)
+#            for v in self.csp.binaryPotentials[var]:
+#                print(self.csp.binaryPotentials[var].get(v))
+                
+            new_domain = []
+            return self.domains[var]
+            
             # Will update the domains! The unary constraint on var, val was already checked by backtrack before calling this method
             raise Exception("Not implemented yet")
             # END_YOUR_CODE
